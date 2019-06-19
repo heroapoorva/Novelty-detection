@@ -1,4 +1,4 @@
-from functions.py import *
+from functions import *
 # declare empty dictionary
 d={}
 # this will contain all words in a given file
