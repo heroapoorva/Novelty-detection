@@ -1,3 +1,4 @@
+from functions import *
 with open('clean.json') as json_file:  
     lines=json_file.readlines()
 with open('dict.json') as json_file:  
