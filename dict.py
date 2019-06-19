@@ -1,4 +1,4 @@
-import simplejson as json
+from functions.py import *
 # declare empty dictionary
 d={}
 # this will contain all words in a given file
@@ -17,4 +17,3 @@ for x in f:
 f.close()
 with open('dict.json', 'w') as outfile:  
     json.dump(d, outfile)
-
