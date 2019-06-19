@@ -68,7 +68,7 @@ print("Parsing finished!")
 (start_position,end_position)=date_dictionary(lines)
 print("Dictionary created")
 start_date=str(input("Enter the date from which you want to start comparing\n The format should be YYYYMMDD.\n"))
-start_date="20140101"
+#start_date="20140101"
 end_date=str(input("Enter the date till which you want to compare, the date is not included.\n The format should be YYYYMMDD.\n"))
 print("Specify a news article you want to compare, enter a number between %d and %d", (start_position[str(end_date)], end_position[str(end_date)]))
 nn=input()
