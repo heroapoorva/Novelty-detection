@@ -1,4 +1,4 @@
-from functions.py import *
+from functions import *
 
 fh=open("2014.json","r")
 lines=fh.readlines()
