@@ -12,6 +12,8 @@ import nltk
 nltk.download('stopwords')
 nltk.download('wordnet')
 
+# The original news documents contain articles which are not json parseable.
+# Simply check for url, title, dop and text files.
 def make_parseable(t):
     output=""
     i=0
@@ -41,6 +43,7 @@ def make_parseable(t):
             output=output+t[i]
             i=i+1
     return output
+
 #removing random symbols
 def remove_junk(t):
     output=''
@@ -53,14 +56,17 @@ def remove_junk(t):
             output=output+t[i].lower()
     output="".join([x if ord(x) < 128 else '' for x in output])
     return output
+
 #Removing stopwords
 def remove_stop_words(t):
     english_stop_words = stopwords.words('english')
     return(' '.join([word for word in t.split() if word not in english_stop_words]))
+
 #Lemmatization    
 def get_lemmatized_text(t):
     lemmatizer = WordNetLemmatizer()
     return(' '.join([lemmatizer.lemmatize(word) for word in t.split()]))
+
 #Running and printing in a new file
 def do_all(t):
     try:
@@ -78,7 +84,6 @@ def do_all(t):
 def final_function(t):
     return(json.dumps(do_all(t)))
 
-
 def get_top(n,d):
     newd={}
     index={}
@@ -88,10 +93,12 @@ def get_top(n,d):
         index[k]=i
         i=i+1
     return(newd,index)
+
 def dictionary_array(t):
     pool = mp.Pool(processes=mp.cpu_count())
     new = pool.map(json.loads, (t[i] for i in range(len(t)) ))
     return(new)
+
 def date_dictionary(t):
     start_position={"20140101":0}
     end_position={}
@@ -103,7 +110,9 @@ def date_dictionary(t):
             start_position[temp2]=i
     end_position[temp2]=len(t)-1
     return(start_position,end_position)
-def create_vector(t,newd,index):
+
+#Given a string and the 2 dictionaries, the function
+def frequency_vector(t,newd,index):
     temp_text=t.split()
     temp_array=np.zeros(len(newd.keys()))
     for word in temp_text:
@@ -112,16 +121,18 @@ def create_vector(t,newd,index):
         except:
             continue
     return (np.asarray(temp_array))
-def create_matrix(l,td,ind):
+
+def tfidf_matrix(l,td,ind):
     matrix=[]
     for i in range(len(l)):
         matrix.append(0)
     for i in range(len(l)):
-        to_append=create_vector(l[i]["text"],td,ind)
+        to_append=frequency_vector(l[i]["text"],td,ind)
         matrix[i]=to_append
     return (matrix)
-def tfidf(mat,l,td,ind,n,spsd):
-    v=create_vector(l[n]["text"],td,ind)
+
+def tfidf(mat,l,td,ind,spsd):
+    v=frequency_vector(l,td,ind)
     max_prod=0
     max_index=0
     for i in range(len(mat)-1):
@@ -129,9 +140,13 @@ def tfidf(mat,l,td,ind,n,spsd):
             max_prod=np.dot(v,mat[i])
             max_index=i
     return (max_prod,max_index+spsd)
-def index_matrix(com_nam, pro_nam):
+
+# Given 2 list of "pro_nam" of strings and "lines" of dictionaries. The 
+# function returns a 2D array ith array contains indices of occurances of
+# com_nam[i] in lines['title'].
+def index_matrix(pro_nam,lines):
     pro_mat=[]
-    for j in range(len(com_nam)):
+    for j in range(len(pro_nam)):
         pro_mat.append([])
     for j in range(len(pro_nam)):
         temp_array=pro_nam[j].split()
@@ -141,3 +156,24 @@ def index_matrix(com_nam, pro_nam):
                     pro_mat[j].append(i)
                     break
     return pro_mat
+
+# Given a list "l" and a list of indices "a". The function returns a subset of 
+# "l" with the indices in "a".
+def subarray(l,a):
+    output=[]
+    for i in range(len(a)):
+        output.append(l[i])
+    return (output)
+    
+# Sliding the window for TF-IDF.
+def sliding_window_tfidf(mat, td, ind,size):
+    output=[]
+    matrix=tfidf_matrix(mat[:size],td, ind)
+    for i in range(size,len(mat)):
+        temp_array=frequency_vector(mat[i]["text"],td,ind)
+        (sp,si)=tfidf(matrix,mat[i]["text"],td,ind,0)
+        output.append(sp)
+        matrix=matrix[1:]
+        matrix.append(0)
+        matrix[-1]=temp_array
+    return output
