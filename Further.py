@@ -1,15 +1,27 @@
 
-from functions.py import *
+from functions import *
 with open('clean.json') as json_file:  
     lines=json_file.readlines()
     lines=dictionary_array(lines)
 with open('DowJones30.txt') as fh:
     com_nam=fh.readlines()
+with open('dict.json') as json_file:  
+    data = json.load(json_file)
 
 pool = mp.Pool(processes=mp.cpu_count())
-english_stop_words = stopwords.words('english')
 pro_nam=pool.map(remove_junk, (com_nam[j] for j in range(len(com_nam)) ))
 pro_nam=pool.map(remove_stop_words,(pro_nam[j] for j in range(len(pro_nam)) ))
 pro_nam=pool.map(get_lemmatized_text,(pro_nam[j] for j in range(len(pro_nam)) ))
-matrix=index_matrix(com_nam,pro_nam)
+print("Names are cleared")
 
+(top_dict,index_dict)=get_top(20000,data)
+print("got dictionary")
+
+
+indices=index_matrix(pro_nam,lines)
+
+with file('values.txt', 'w') as outfile:
+    for i in range(len(indices)):
+        matrix=subarray(lines,indices[i])
+        values=sliding_window_tfidf(matrix,top_dict,index_dict,20)
+        np.savetxt(outfile, values)
