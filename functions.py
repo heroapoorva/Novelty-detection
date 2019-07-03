@@ -173,7 +173,7 @@ def subarray(l,a):
 # Sliding the window for TF-IDF. Takes in input a 
 def sliding_window_tfidf(mat, td, ind,size):
     output=[]
-    matrix=tfidf_matrix(mat[:size],td, ind)
+    matrix=frequency_matrix(mat[:size],td, ind)
     for i in range(size,len(mat)):
         (sp,si)=tfidf(matrix,mat[i]["text"],td,ind,0)
         output.append(sp)
