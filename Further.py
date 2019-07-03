@@ -17,11 +17,13 @@ print("Names are cleared")
 (top_dict,index_dict)=get_top(20000,data)
 print("got dictionary")
 
-
 indices=index_matrix(pro_nam,lines)
-
-with file('values.txt', 'w') as outfile:
-    for i in range(len(indices)):
-        matrix=subarray(lines,indices[i])
-        values=sliding_window_tfidf(matrix,top_dict,index_dict,20)
-        np.savetxt(outfile, values)
+fh=open("value.txt","w")
+for i in range(len(indices)):
+    matrix=subarray(lines,indices[i])
+    values=sliding_window_tfidf(matrix,top_dict,index_dict,20)
+    for j in values:
+        fh.write(str(j))
+        fh.write(" ")
+    fh.write("\n")
+fh.close()
