@@ -2,7 +2,7 @@
 
 The idea of the project is to use news article gathered from the web to calculate novelty of a news article compared to a set of news article and do even more analysis such as outlier detection, classification based on keywords, comparing classification techniques for news articles.
 
-# Idea with details
+# Details
 Novelty detection for news articles can be thought of as how different a news article is compared to a set of news article(s). This will be formalized shortly. A news article is assumed to have 4 fields/ keys; text, title, url, dop. Novelty detection is going to use the text of a news article and not the title or date of publishing (dop) or the url of the news article.
 
 ### Frequency Vector
@@ -54,6 +54,8 @@ Calculate performance  measures such as Precision, Recall, Specificity for diffe
 
 
 # Input format
+The exact input order will be written in the execution section.
+
 ### Cleaning
 The input for this step should be a json file, which contains the news articles, which can be specified at run time. The json news articles must have these 4 keys:
 
@@ -72,7 +74,32 @@ The input to this step should be a json parseable file with cleaning done and th
         - `url` - The urls from where the news article was gathered.
         - `dop` - The date of publishing of the news article.
         
-The output of this step is a json object which contains all the words which appear in the corpus. This output is written to disk. 
+The output of this step is a json object which contains all the words and how many time they appear in the corpus. This output is written to disk. 
+
+### Novelty Detection
+The input to this step should be 
+1. Json parseable file with cleaning done with the 4 keys
+2. A dictionary of all the words and their number of occurance in the json file, as another json file
+3. A number indicating the number of topwords which should be used.
+
+The output of this step is an array of novelty values, this is written to disk.
+
+### Outlier Detection
+The input to this step should be 
+1. Json parseable file with cleaning done with the 4 keys
+2. A dictionary of all the words and their number of occurance in the json file, as another json file
+3. A number indicating the number of topwords which should be used.
+4. A file containing the keywords for filtering
+
+The output of this step is an array of arrays of novelty values for each keyword, this is written to disk.
+
+### Classification
+The input to this step should be 
+1. Json parseable file with cleaning done with the 4 keys
+2. A dictionary of all the words and their number of occurance in the json file, as another json file
+3. A number indicating the number of topwords which should be used.
+4. A file containing the keywords for filtering
+5. Another Json parseable file with cleaning done with the 4 keys for prediction
 
 # Execution
 The execution will take place in 5 steps:
@@ -81,7 +108,7 @@ The execution will take place in 5 steps:
         - `dictionary` -
         - `novelty calculation` -
         - `outlier detection` -
-        - `classifier` -
+        - `classification` -
 
 The step can be run regardless of the previous steps, provided the input for the given step is provided in proper format as stated.
 
