@@ -1,24 +1,38 @@
-from functions import *
-with open('clean.json') as json_file:  
-    lines=json_file.readlines()
-with open('dict.json') as json_file:  
-    data = json.load(json_file)
-print("Read the news files and the dictionary")
+from novelty_function import *
+def main():
+    
+    input_file = open(sys.argv[1], "r")
+    lines = input_file.readlines()
+    
+    dict_file = open(sys.argv[2], "r")
+    data = json.load(dict_file)
+    
+    (top_dict,indices)=get_top(int(sys.argv[3]),data)
+    print("got dictionary")
+    
+    lines=dictionary_array(lines)
+    print("Parsing finished!")
 
-(top_dict,indices)=get_top(20000,data)
-print("got dictionary")
-
-lines=dictionary_array(lines)
-print("Parsing finished!")
-
-(start_position,end_position)=date_dictionary(lines)
-print("Dictionary created")
-
-start_date=str(input("Enter the date from which you want to start comparing\n The format should be YYYYMMDD.\n"))
-end_date=str(input("Enter the date till which you want to compare, the date is not included.\n The format should be YYYYMMDD.\n"))
-nn=input("Specify index of the news article you want compare against the window.")
-matrix=frequency_matrix(lines[start_position[start_date]:start_position[end_date]],top_dict,indices)
-print("Matrix created.")
-for i in range(start_position[str(end_date)]+1, end_position[str(end_date)]):
-    (sp, si) = tfidf(matrix, lines[i]["text"], top_dict, indices, start_position[start_date])
-    print(si)
+    (start_position,end_position)=date_dictionary(lines)
+    print("Dictionary created")
+    
+    values = sliding_window_tfidf(lines,top_dict,indices,int(sys.argv[4]))
+    
+    fh=open(sys.argv[5], "w")
+    for i in values:
+        fh.write(str(i))
+        fh.write(" ")
+    fh.close()
+    input_file.close()
+    dict_file.close()
+    
+if __name__ == '__main__':
+    '''
+    There should be at max 5 inputs, 
+    First the cleaned json file, 
+    Second the dictionary file contaning the words,
+    Third the number of topwords to use
+    Fourth the window size 
+    Lastly the output file for the novelty values.
+    '''
+    main()
