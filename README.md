@@ -52,37 +52,55 @@ Calculate performance  measures such as Precision, Recall, Specificity for diffe
         
 # Implementation
 
+# Execution
+The execution will take place in 5 steps:
 
-# Input format
-The exact input order will be written in the execution section.
+        - `cleaning` - Making the news data json parseable.
+        - `dictionary` - extracting the dictionary of words from the corpus.
+        - `novelty calculation` - Calculating novelty values given news articles.
+        - `outlier detection` - Doing various analysis on the novelty values for certain keywords.
+        - `classification` - Use ML techniques to predict 
+
+The step can be run regardless of the previous steps, provided the input for the given step is provided in proper format as stated.
+
+## Input format
 
 ### Cleaning
-The input for this step should be a json file, which contains the news articles, which can be specified at run time. The json news articles must have these 4 keys:
+The input for this step should be
+1. A json file, which contains the news articles. 
+2. The output file.
+
+The json news articles must have these 4 keys:
 
         - `text` - The text of the news article.
         - `title` - The title of the news article.
         - `url` - The urls from where the news article was gathered.
         - `dop` - The date of publishing of the news article.
-       
-The output of this step is a cleaned the data, i.e  json parseable file, removed stopwords, converted everything to smaller case, lemmatized. This output is written to disk
+
+The output of this step is a cleaned the data, i.e  json parseable file, removed stopwords, converted everything to smaller case, lemmatized.
 
 ### Dictionary
-The input to this step should be a json parseable file with cleaning done and these 4 keys:
+The input to this step should be
+1. A json parseable file with cleaning done.
+2. The output file.
+
+The json news articles must have these 4 keys:
 
         - `text` - The text of the news article.
         - `title` - The title of the news article.
         - `url` - The urls from where the news article was gathered.
         - `dop` - The date of publishing of the news article.
         
-The output of this step is a json object which contains all the words and how many time they appear in the corpus. This output is written to disk. 
+The output of this step is a json object(a dictionary) which contains all the words appearing in the corpus and how many time they appear in the corpus. 
 
 ### Novelty Detection
 The input to this step should be 
 1. Json parseable file with cleaning done with the 4 keys
 2. A dictionary of all the words and their number of occurance in the json file, as another json file
 3. A number indicating the number of topwords which should be used.
+4. The output file.
 
-The output of this step is an array of novelty values, this is written to disk.
+The output of this step is an array of novelty values.
 
 ### Outlier Detection
 The input to this step should be 
@@ -91,26 +109,17 @@ The input to this step should be
 3. A number indicating the number of topwords which should be used.
 4. A file containing the keywords for filtering
 
-The output of this step is an array of arrays of novelty values for each keyword, this is written to disk.
+The output of this step is an array of arrays of novelty values. Each array contains novelty values for a keyword based on the window size.
 
 ### Classification
 The input to this step should be 
-1. Json parseable file with cleaning done with the 4 keys
+1. Json parseable file with cleaning done with the 4 keys.
 2. A dictionary of all the words and their number of occurance in the json file, as another json file
 3. A number indicating the number of topwords which should be used.
-4. A file containing the keywords for filtering
-5. Another Json parseable file with cleaning done with the 4 keys for prediction
+4. A file containing the keywords for filtering.
+5. Another Json parseable file with cleaning done with the 4 keys for prediction.
 
-# Execution
-The execution will take place in 5 steps:
-
-        - `cleaning` - 
-        - `dictionary` -
-        - `novelty calculation` -
-        - `outlier detection` -
-        - `classification` -
-
-The step can be run regardless of the previous steps, provided the input for the given step is provided in proper format as stated.
+The output of this step is the classification of each news article based on the prediction.
 
 # Results
 This section is about results for the dataset I am using.
