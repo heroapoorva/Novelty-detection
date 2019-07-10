@@ -68,6 +68,12 @@ The execution will take place in 5 steps:
 
 The step can be run regardless of the previous steps, provided the input for the given step is provided in proper format as stated.
 
+        - python cleaning.py path_to_corpus output_file
+        - python dictionary.py path_to_corpus output_file
+        - python novelty.py path_to_corpys path_to_dictionary number_of_topwords output_file 
+        - python outlier.py path_to_corpus path_to_dictionary number_of_topwords path_to_keywords output_file
+        - python classification.py path_to_corpus path_to_dictionary number_of_topwords path_to_keywords path_to_predict output_file.
+
 ## Input format
 
 ### Cleaning
@@ -113,6 +119,7 @@ The input to this step should be
 2. A dictionary of all the words and their number of occurance in the json file, as another json file
 3. A number indicating the number of topwords which should be used.
 4. A file containing the keywords for filtering
+5. The output file
 
 The output of this step is an array of arrays of novelty values. Each array contains novelty values for a keyword.
 
@@ -123,6 +130,7 @@ The input to this step should be
 3. A number indicating the number of topwords which should be used.
 4. A file containing the keywords for filtering.
 5. Another Json parseable file with cleaning done with the 4 keys for prediction.
+6. The output file.
 
 The output of this step is the classification of each news article based on the prediction.
 
