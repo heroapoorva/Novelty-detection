@@ -9,8 +9,8 @@ def index_matrix(keywords,lines):
         indices.append([])
     for i in range(len(lines)):
         for j in range(len(keywords)):
-		if(keywords[j] in lines[i]['title']):
-			indices[j].append(i)
+            if(keywords[j] in lines[i]['title']):
+                indices[j].append(i)
     return indices
 
 # Given a list "l" and a list of indices "a". The function returns a subset of 
