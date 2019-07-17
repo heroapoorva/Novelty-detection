@@ -1,26 +1,19 @@
 from cleaning_function import *
 def main():
     read_file = open(sys.argv[1], "r")
-    while(True):
-        '''
-        For a given news file, we read as many lines as many cores are there
-        for use, each of these core will clean a separate news article.
-        Cleaning includes, making the news article json parseable, removing 
-        special characters, removing stopwords and finally lemmatizing.
-        '''
-        lines = []
-        for i in range(mp.cpu_count()):
-            lines.append(read_file.readline())
-        pool = mp.Pool(processes = mp.cpu_count())
-        news=[]
-        news=pool.map(final_function, (lines[i] for i in range(len(lines)) ))
-        write_file=open(sys.argv[2],"w")
-        for new in news:
-            if(new != ""):
-                write_file.write(new)
-                write_file.write("\n")
-        if("" in news):
-            break
+    write_file=open(sys.argv[2],"w")
+    '''
+    For a given news file, we read as many lines as many cores are there
+    for use, each of these core will clean a separate news article.
+    Cleaning includes, making the news article json parseable, removing 
+    special characters, removing stopwords and finally lemmatizing.
+    '''
+    lines = []
+    for i, line in enumerate(read_file):
+        line = final_function(line)
+        if(line != ''):
+            write_file.write(line)
+            write_file.write("\n")
     read_file.close()
     write_file.close()
     
