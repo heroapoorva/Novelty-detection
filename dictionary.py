@@ -5,8 +5,8 @@ def main():
     d={}
     # this will contain all words in a given file
     # We will print these out in another file
-    for x in f:
-        temp_json=json.loads(x)
+    for i, line in enumerate(f):
+        temp_json=json.loads(line)
         temp_text=temp_json["text"].split()
         for word in temp_text:
             if(word in d):
