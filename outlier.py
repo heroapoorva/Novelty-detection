@@ -1,16 +1,22 @@
-from outlier_functions import *
+from outlier_function import *
 def main():
     with open(sys.argv[1]) as json_file:  
         lines=json_file.readlines()
     with open(sys.argv[2]) as json_file:  
         data = json.load(json_file)
     with open(sys.argv[3]) as read_file:  
-        keywords = read_file.readlines()
+        temp_keywords = read_file.readlines()
     print("Read the news files and the dictionary")
+    
+    keywords=[]
+    for temp_keyword in temp_keywords:
+        keywords.append((temp_keyword.lower())[:-1])
+    '''
     pool = mp.Pool(processes=mp.cpu_count())
     keywords=pool.map(remove_junk, (keywords[j] for j in range(len(keywords)) ))
     keywords=pool.map(remove_stop_words,(keywords[j] for j in range(len(keywords)) ))
     keywords=pool.map(get_lemmatized_text,(keywords[j] for j in range(len(keywords)) ))
+    '''
     print("Names are cleared")
     
     (top_dict,index_dict)=get_top(int(sys.argv[4]),data)
@@ -20,7 +26,6 @@ def main():
     print("Parsing finished!")
     
     indices=index_matrix(keywords,lines)
-    print("Got indices")
     
     fh=open(sys.argv[6],"w")
     for i in range(len(indices)):
