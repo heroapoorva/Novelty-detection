@@ -16,9 +16,10 @@ def get_top(n,d):
     return(newd,index)
 
 def dictionary_array(t):
-    pool = mp.Pool(processes=mp.cpu_count())
-    new = pool.map(json.loads, (t[i] for i in range(len(t)) ))
-    return(new)
+    output=[]
+    for i in t:
+        output.append(json.loads(i))
+    return output
 
 def date_dictionary(t):
     start_position={"20140101":0}
@@ -43,13 +44,10 @@ def frequency_vector(t,newd,index):
     temp_array=np.zeros(len(newd.keys()))
     for word in temp_text:
         try:
-            temp_array[index[word]]=temp_array[index[word]]+1
+            temp_array[index[word]]=temp_array[index[word]]+1.0
         except:
             continue
-    try:
-        temp_array = temp_array / (np.sum(temp_array))
-    except:
-        continue
+    temp_array = temp_array / (np.sum(temp_array))
     return (temp_array)
 
 # Takes in input a list of dictionaries, a top words dictionary and the inverse
@@ -64,12 +62,15 @@ def frequency_matrix(l,td,ind):
     return (matrix)
     
 def idf_array(l):
-    output = np.zeros(len(l[0]))
+    try:
+        output = np.zeros(len(l[0]))
+    except:
+        output = np.zeros(0)
     for i in range(len(output)):
-        try:
+        if(np.count_nonzero(l[:,i])==0):
+            output[i] = 0.0
+        else:
             output[i] = log( float(len(l)) / np.count_nonzero(l[:,i]))
-        except:
-            output[i] = 0
     return output
 
 def read_input(f, a):
@@ -81,7 +82,7 @@ def read_input(f, a):
     return output
     
 def tfidf_matrix(l):
-    return np.multiply(np.asarray(l),idf_array(l))
+    return np.multiply(np.asarray(l),idf_array(np.asarray(l)))
     
 def novelty(mat,l,td,ind,spsd):
     v=frequency_vector(l,td,ind)
