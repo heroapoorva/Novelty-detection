@@ -38,11 +38,24 @@ def main():
     indices=flatten_2d(indices)
     X=frequency_matrix(subarray(lines,indices), top_dict,index_dict)
     print("Got X")
-
-    clf = knn()
-    clf = clf.fit(X, y,len(keywords))
+    
+    mapIndexPosition = list(zip(X, y))
+    random.shuffle(mapIndexPosition)
+    X, y = zip(*mapIndexPosition)
+    print("shuffle done.")
+    
+    clf = knn(len(keywords))
+    clf = clf.fit(X[:], y[:])
     print("Fitting Done")
-    answers=clf.predict([frequency_vector(lines[0]["text"], top_dict, index_dict), frequency_vector(lines[1]["text"], top_dict, index_dict)])
+    
+    answers =  clf.predict(frequency_matrix(lines[:5],top_dict,_index_dict))
+    print("Predictions Done")
+    
+    use = int(len(X)*0.9)
+    print(len(X), use)
+    correct_percent = cross_validation(clf, X[:use], y[:use], X[use:], y[use:])
+    print(correct)
+    
     fh=open(sys.argv[5],"w")
     for i in answers:
         fh.write(str(i))
