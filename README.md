@@ -138,3 +138,11 @@ The output of this step is the classification of each news article based on the 
 This section is about results for the dataset I am using.
 
 # Further work
+In this section I wish to discuss the problems and improvements to my code.
+
+### RAM usage
+Currently the code is reading up entire files and sotring it as variable, this is resulting in high RAM usage and slowing the code to a certain extent.
+A possible way to improve this is to pass the file as a variable to the functions which will read the file and store things only when needed.
+
+### Input format
+Again, the input format can be made better so that the usage of ram is low and the code is faster. One improvement will be to store the start and end indicies for dates.   
