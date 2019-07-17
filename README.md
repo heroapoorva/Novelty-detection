@@ -56,6 +56,30 @@ Calculate performance measures such as Precision, Recall, Specificity for differ
         - Try different prior
         
 # Implementation
+## Cleaning
+The goal of this part is 
+
+        1. To make a given json file parseable.
+        2. Converting everything into lowercase, and removing non ascii characters.
+
+It is assumed that the news articles given is going to have only 4 fields, `text` The text of the news article, `title` The title of the news article, `url` The urls from where the news article was gathered, `dop` The date of publishing of the news article. So the data was cleaned by replacing any double quotes by single quotes except for the ones near the 4 fields.
+
+This is achieved by using the `.lower()` function along with `ord` function. 
+## Dictionary
+The goal of this part is to get a dictionary of all the words and the number of occurances in the text fields of news articles.
+This was achieved by maintaing a dictionary, reading the news article line by line and for each line read, the dictionary was updated by adding the number of occurances of words in that particular news article.
+
+## Novelty Calculation
+The goal of this part is to calculate the novelty of a particular news article with respect to a window if news article just before it.
+This is achieve by reading all the news articles and storing it in a variable. Read the dictionary of words and extracting the top k keywrods. Calculating the start and end indices of each date. Making a TF-IDF matrix of the window given and calculating the novelty value for a given target news article w.r.t the window.
+
+## Outlier Detection
+The goal of this part is to calculate the novelty values among news articles about a particular keyword with respect to a window of news article about the same keyword.
+This is achieved by filtering out news articles about a particular given keyword, i.e. check if the word appears in the title of the news article, and doing a sliding window novelty calculations with a given window size.
+
+## Classification
+The goal of this part is to train various machine learning models to predict, based on the text of a news article, which keyword the news corresponds to.
+This is achieved by filtering out news articles as in previous step, converting it to martix and using it as training data for the machine learning techniques.
 
 # Execution
 The execution will take place in 5 steps:
