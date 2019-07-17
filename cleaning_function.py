@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-import simplejson as json
+import json
 from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
 import nltk
@@ -44,7 +44,9 @@ def make_parseable(t):
 
 #removing random symbols
 def remove_junk(t):
-    output=''
+    utf=''
+    utf="".join([x if ord(x) < 128 else ' ' for x in t.lower()])
+    '''
     space_characters=["1","2","3","4","5","6","7","8","9","0","~","`","!","@","#","$","%","^",
     "&","*","(",")","_","-","+","=","{","}","[","]","|","\\",":",";","\"","'",",","<",".",">","/","?",]
     for i in range(len(t)):
@@ -52,8 +54,8 @@ def remove_junk(t):
             output=output+" "
         else:
             output=output+t[i].lower()
-    output="".join([x if ord(x) < 128 else '' for x in output])
-    return output
+    '''
+    return utf
 
 #Removing stopwords
 def remove_stop_words(t):
@@ -70,13 +72,14 @@ def do_all(t):
     try:
         parsed_line=(json.loads(t))
     except:
-        parsed_line=(json.loads(make_parseable(t)))
+        temp = make_parseable(t)
+        parsed_line=(json.loads(temp))
     parsed_line["text"]=remove_junk(parsed_line["text"])
-    parsed_line["text"]=remove_stop_words(parsed_line["text"])
-    parsed_line["text"]=get_lemmatized_text(parsed_line["text"])
+#    parsed_line["text"]=remove_stop_words(parsed_line["text"])
+#    parsed_line["text"]=get_lemmatized_text(parsed_line["text"])
     parsed_line["title"]=remove_junk(parsed_line["title"])
-    parsed_line["title"]=remove_stop_words(parsed_line["title"])
-    parsed_line["title"]=get_lemmatized_text(parsed_line["title"])
+#    parsed_line["title"]=remove_stop_words(parsed_line["title"])
+#    parsed_line["title"]=get_lemmatized_text(parsed_line["title"])
     return  (parsed_line)
 
 def final_function(t):
