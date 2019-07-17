@@ -1,5 +1,6 @@
 from outlier_function import *
 import operator
+import random
 # Given a 2d array into a 1d array row wise. 
 def flatten_2d(a):
     output=[]
@@ -60,15 +61,14 @@ class naive_bayes:
             raise NotFittedError(self.__class__.__name__)
             
 class knn():
-    def __init__(self):
+    def __init__(self, n):
         self.data = []
         self.results = []
-        self.number = 1
+        self.number = n
     
-    def fit(self,X,y,k):
+    def fit(self,X,y):
         self.data = X
         self.results = y
-        self.number = k
         return self
     
     def predict(self, test_set):
@@ -107,13 +107,18 @@ class knn():
 def cross_validation(model,train_data,train_result,test_data, test_result):
     model = model.fit(train_data,train_result)
     predictions = model.predict(test_data)
-    
+    correct = 0.0
+    for i in range(len(predictions)):
+        if(predictions[i] == test_result[i]):
+            correct = correct + 1
+    return correct/(len(prediction))
+
 '''
 from classification_function import *
 X=[[0,0,0],[0,0,1],[0,1,0],[0,1,1],[1,0,0],[1,0,1],[1,1,0],[1,1,1], [10,10,10],[10,10,11],[10,11,10],[10,11,11],[11,10,10],[11,10,11],[11,11,10],[11,11,11]]
 y=[1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2]
-clf=knn()
-clf=clf.fit(X,y,8)
+clf=knn(2)
+clf=clf.fit(X,y)
 clf.predict([[2,2,2],[12,12,12]])
 
 '''    
