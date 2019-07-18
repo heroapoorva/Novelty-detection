@@ -48,13 +48,13 @@ def main():
     clf = clf.fit(X[:], y[:])
     print("Fitting Done")
     
-    answers =  clf.predict(frequency_matrix(lines[:5],top_dict,_index_dict))
+    answers =  clf.predict(frequency_matrix(lines[:5],top_dict,index_dict))
     print("Predictions Done")
     
     use = int(len(X)*0.9)
     print(len(X), use)
     correct_percent = cross_validation(clf, X[:use], y[:use], X[use:], y[use:])
-    print(correct)
+    print(correct_percent)
     
     fh=open(sys.argv[5],"w")
     for i in answers:
