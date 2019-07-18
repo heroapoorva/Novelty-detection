@@ -48,15 +48,19 @@ def main():
     clf = clf.fit(X[:], y[:])
     print("Fitting Done")
     
-    answers =  clf.predict(frequency_matrix(lines[:5],top_dict,index_dict))
-    print("Predictions Done")
-    
     use = int(len(X)*0.9)
     print(len(X), use)
+    
     correct_percent = cross_validation(clf, X[:use], y[:use], X[use:], y[use:])
     print(correct_percent)
     
-    fh=open(sys.argv[5],"w")
+    with open(sys.argv[5]) as json_file:  
+        to_predict = json_file.readlines()
+    to_predict = dictionary_array(to_predict)
+    answers =  clf.predict(frequency_matrix(to_predict,top_dict,index_dict))
+    print("Predictions Done")
+    
+    fh=open(sys.argv[6],"w")
     for i in answers:
         fh.write(str(i))
         fh.write("\n")
@@ -69,6 +73,7 @@ if __name__ == '__main__':
     Second the dictionary file contaning the words,
     Third the keywords file, each separated by a line.
     Fourth the number of topwords to use
-    Fifth the output file for the classification values.
+    Fifth the file containing news which are to be classified.
+    Sixth the output file for the classification values.
     '''
     main()
