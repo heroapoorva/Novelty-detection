@@ -111,7 +111,7 @@ def cross_validation(model,train_data,train_result,test_data, test_result):
     for i in range(len(predictions)):
         if(predictions[i] == test_result[i]):
             correct = correct + 1
-    return correct/(len(prediction))
+    return correct/(len(predictions))
 
 '''
 from classification_function import *
