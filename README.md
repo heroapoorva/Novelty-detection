@@ -96,7 +96,7 @@ The step can be run regardless of the previous steps, provided the input for the
         - python dictionary.py path_to_corpus output_file
         - python novelty.py path_to_corpys path_to_dictionary number_of_topwords output_file 
         - python outlier.py path_to_corpus path_to_dictionary number_of_topwords path_to_keywords output_file
-        - python classification.py path_to_corpus path_to_dictionary number_of_topwords path_to_keywords path_to_predict output_file.
+        - python classification.py path_to_corpus path_to_dictionary path_to_keywords number_of_topwords path_to_news_to_predict output_file.
 
 ## Input format
 
